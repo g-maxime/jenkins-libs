@@ -24,7 +24,7 @@ def call(path, name) {
             deleteDir()
             unstash("codesign-input-${id}")
             withEnv(["FILE=${file}", "NAME=${name}"]) {
-                sh '$HOME/.codesign "${NAME}" "${FILE}" "${FILE}.signed"'
+                sh 'sleep 10; $HOME/.codesign "${NAME}" "${FILE}" "${FILE}.signed"'
             }
             stash(name: "codesign-output-${id}", includes: "${file}.signed")
         }
@@ -32,7 +32,7 @@ def call(path, name) {
         withEnv(["FILE=${file}"]) {
             powershell '''
                 Remove-Item -Force -Path "${Env:FILE}"
-                Copy-Item -Force -Path "${Env:FILE}.signed" -Destination "${Env:FILE}"
+                Move-Item -Force -Path "${Env:FILE}.signed" -Destination "${Env:FILE}"
             '''
         }
     }
