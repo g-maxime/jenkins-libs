@@ -27,6 +27,10 @@ def call(path, name) {
                 sh 'sleep 10; $HOME/.codesign "${NAME}" "${FILE}" "${FILE}.signed"'
             }
             stash(name: "codesign-output-${id}", includes: "${file}.signed")
+            dir("${workspace}@tmp") {
+                deleteDir()
+            }
+            cleanWs()
         }
         unstash("codesign-output-${id}")
         withEnv(["FILE=${file}"]) {
