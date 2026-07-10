@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger
 @Field static AtomicInteger counter = new AtomicInteger(0)
 
 def call(path, name) {
+    return
     def file = new File(path).name
     def id = counter.incrementAndGet()
 
